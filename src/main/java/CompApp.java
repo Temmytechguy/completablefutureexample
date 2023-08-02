@@ -19,19 +19,19 @@ public class CompApp {
         public static void main(String[] args) throws ExecutionException, InterruptedException, TimeoutException {
 
             Logger          log     = LoggerFactory.getLogger(CompApp.class);
-            ExecutorService service = Executors.newFixedThreadPool(3);
+            ExecutorService service = Executors.newFixedThreadPool(1);
             long            start   = System.currentTimeMillis();
-            System.out.println("start time: " + start);
-            log.info("hi");
+            log.info("start time: " + start);
+
 
             Future<List<Integer>> future = service.submit(() -> {
-                System.out.println("Thread: " + Thread.currentThread().getName());
+                log.info("Thread: " + Thread.currentThread().getName());
                 List<Integer> primeNumbers = new ArrayList<>();
                 for(int i = 0; i < 200; i++)
                 {
                     if (isPrime(i)) {
                         primeNumbers.add(i);
-                        log.info(String.valueOf(primeNumbers));
+
                     }
                 }
                 return primeNumbers;
@@ -43,16 +43,11 @@ public class CompApp {
             List<Integer> collect = primes.stream()
                     .sorted(Comparator.reverseOrder())
                     .collect(Collectors.toList());
-            System.out.println(collect);
+          log.info(" " + collect);
             service.shutdown();
             long end = System.currentTimeMillis();
             long duration = (end - start);
-            System.out.println("end time: " + duration + " ms");
-
-            //completable future
-            CompletableFuture<String>  completableFuture = new CompletableFuture<>();
-            //returns no argument
-
+            log.info("end time: " + duration + " ms");
 
 
 
